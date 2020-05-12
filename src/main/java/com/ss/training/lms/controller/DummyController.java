@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DummyController {
 
+	@RequestMapping(path = "/lms")
+	public String lmsDummy() {
+		return "LMS page";
+	}
+
 	@RequestMapping(path = "/lms/librarian/dummy")
 	public String librarianDummy() {
 		return "Librarian page";

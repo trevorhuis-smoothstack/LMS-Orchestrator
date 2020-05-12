@@ -20,15 +20,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("borrower").password(passwordEncoder().encode("borrowerPassword"))
 				.roles("BORROWER").and().withUser("librarian").password(passwordEncoder().encode("librarianPassword"))
-				.roles("LIBRARIAN", "BORROWER").and().withUser("admin")
-				.password(passwordEncoder().encode("adminPassword")).roles("ADMIN", "LIBRARIAN", "BORROWER");
+				.roles("LIBRARIAN").and().withUser("admin").password(passwordEncoder().encode("adminPassword"))
+				.roles("ADMIN");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/lms/borrower/*").hasAnyRole("BORROWER", "LIBRARIAN", "ADMIN")
 				.antMatchers("/lms/librarian/*").hasAnyRole("LIBRARIAN", "ADMIN").antMatchers("/lms/admin/*")
-				.hasAnyRole("BORROWER", "LIBRARIAN", "ADMIN");
+				.hasRole("ADMIN").antMatchers("/lms").permitAll().and().httpBasic();
 	}
 
 	@Bean
