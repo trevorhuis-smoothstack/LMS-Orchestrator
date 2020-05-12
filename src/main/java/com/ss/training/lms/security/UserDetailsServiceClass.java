@@ -1,0 +1,25 @@
+package com.ss.training.lms.security;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+/**
+ * @author Justin O'Brien
+ */
+public class UserDetailsServiceClass implements UserDetailsService {
+
+	@Autowired
+	UserRepository userRepository;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<User> user = userRepository.findByUsername(username);
+		user.orElseThrow(() -> new UsernameNotFoundException("The user '" + username + "' was not found."));
+		return new UserDetailsClass(user.get());
+	}
+
+}
