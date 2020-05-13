@@ -3,7 +3,7 @@ package com.ss.training.lms.security;
 /**
  * @author Justin O'Brien
  */
-public class UserCredetials {
+public class UserCredentials {
 
 	private String username;
 	private String password;
