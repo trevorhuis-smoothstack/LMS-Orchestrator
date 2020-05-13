@@ -36,10 +36,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.addFilter(new AuthenticationFilter(authenticationManager()))
 				.addFilter(new AuthorizationFilter(authenticationManager(), this.userRepository)).authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/lms/login").permitAll().antMatchers("/lms/borrower/*")
-				.hasAnyRole("BORROWER", "LIBRARIAN", "ADMIN").antMatchers("/lms/librarian/*")
-				.hasAnyRole("LIBRARIAN", "ADMIN").antMatchers("/lms/admin/*").hasRole("ADMIN").antMatchers("/lms")
-				.permitAll().and().httpBasic();
+				.antMatchers("/lms/borrower/*").hasAnyRole("BORROWER", "LIBRARIAN", "ADMIN")
+				.antMatchers("/lms/librarian/*").hasAnyRole("LIBRARIAN", "ADMIN").antMatchers("/lms/admin/*")
+				.hasRole("ADMIN").antMatchers("/lms").permitAll().and().httpBasic();
 	}
 
 	/**

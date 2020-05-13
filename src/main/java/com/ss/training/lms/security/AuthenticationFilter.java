@@ -28,7 +28,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
-
 	private AuthenticationManager authenticationManager;
 
 	/**
