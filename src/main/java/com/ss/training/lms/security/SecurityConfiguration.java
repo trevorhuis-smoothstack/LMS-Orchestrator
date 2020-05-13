@@ -22,13 +22,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	UserDetailsService userDetailsService;
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
+	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		authenticationManagerBuilder.userDetailsService(userDetailsService);
 	}
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/lms/borrower/*").hasAnyRole("BORROWER", "LIBRARIAN", "ADMIN")
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.authorizeRequests().antMatchers("/lms/borrower/*").hasAnyRole("BORROWER", "LIBRARIAN", "ADMIN")
 				.antMatchers("/lms/librarian/*").hasAnyRole("LIBRARIAN", "ADMIN").antMatchers("/lms/admin/*")
 				.hasRole("ADMIN").antMatchers("/lms").permitAll().and().httpBasic();
 	}
