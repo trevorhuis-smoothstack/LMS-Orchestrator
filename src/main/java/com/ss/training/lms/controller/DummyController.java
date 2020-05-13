@@ -1,5 +1,6 @@
 package com.ss.training.lms.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Justin O'Brien
  */
 @RestController
+@CrossOrigin
 public class DummyController {
 
 	@RequestMapping(path = "/lms")
