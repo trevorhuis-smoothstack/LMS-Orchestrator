@@ -33,6 +33,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.hasRole("ADMIN").antMatchers("/lms").permitAll().and().httpBasic();
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
