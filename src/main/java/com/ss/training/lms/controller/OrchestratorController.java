@@ -16,6 +16,9 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import com.ss.training.lms.entity.Author;
+import com.ss.training.lms.entity.Book;
+import com.ss.training.lms.entity.Borrower;
+import com.ss.training.lms.entity.Genre;
 import com.ss.training.lms.entity.LibraryBranch;
 import com.ss.training.lms.entity.Publisher;
 
@@ -78,6 +81,101 @@ public class OrchestratorController {
 		}
 	}
 	
+	// admin book
+	
+	@PostMapping(path = "/admin/book")
+	public ResponseEntity<Book> createBook(RequestEntity<Book> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/book", HttpMethod.POST, request, Book.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Book>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@GetMapping(path = "/admin/book/{id}")
+	public ResponseEntity<Book> readBook(@PathVariable int id, RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/book/{id}", HttpMethod.GET, request, Book.class, id);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Book>((Book) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@GetMapping(path = "/admin/book")
+	public ResponseEntity<Book[]> readBooks(RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/book", HttpMethod.GET, request, Book[].class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Book[]>((Book[]) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@PutMapping(path = "/admin/book")
+	public ResponseEntity<Book> updateBook(RequestEntity<Book> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/book", HttpMethod.PUT, request, Book.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Book>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@DeleteMapping(path = "/admin/book/{id}")
+	public ResponseEntity<Book> updateBook(@PathVariable int id, RequestEntity<Book> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/book/{id}", HttpMethod.DELETE, request, Book.class, id);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Book>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+	
+	
+	// admin borrower
+	
+	@PostMapping(path = "/admin/borrowers")
+	public ResponseEntity<Borrower> createBorrower(RequestEntity<Borrower> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/borrowers", HttpMethod.POST, request, Borrower.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Borrower>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@GetMapping(path = "/admin/borrowers/{id}")
+	public ResponseEntity<Borrower> readBorrower(@PathVariable int id, RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/borrowers/{id}", HttpMethod.GET, request, Borrower.class, id);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Borrower>((Borrower) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@GetMapping(path = "/admin/borrowers")
+	public ResponseEntity<Borrower[]> readBorrowers(RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/borrowers", HttpMethod.GET, request, Borrower[].class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Borrower[]>((Borrower[]) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@PutMapping(path = "/admin/borrowers")
+	public ResponseEntity<Borrower> updateBorrower(RequestEntity<Borrower> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/borrowers", HttpMethod.PUT, request, Borrower.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Borrower>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@DeleteMapping(path = "/admin/borrowers/{id}")
+	public ResponseEntity<Borrower> updateBorrower(@PathVariable int id, RequestEntity<Borrower> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/borrowers/{id}", HttpMethod.DELETE, request, Borrower.class, id);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Borrower>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+	
 	// admin branch
 	
 	@PostMapping(path = "/admin/branch")
@@ -122,6 +220,53 @@ public class OrchestratorController {
 			return restTemplate.exchange(adminBase + "/branches/{id}", HttpMethod.DELETE, request, LibraryBranch.class, id);
 		} catch (RestClientResponseException e) {
 			return new ResponseEntity<LibraryBranch>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+	
+	// admin genre
+	
+	@PostMapping(path = "/admin/genre")
+	public ResponseEntity<Genre> createGenre(RequestEntity<Genre> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/genre", HttpMethod.POST, request, Genre.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Genre>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@GetMapping(path = "/admin/genre/{id}")
+	public ResponseEntity<Genre> readGenre(@PathVariable int id, RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/genre/{id}", HttpMethod.GET, request, Genre.class, id);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Genre>((Genre) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@GetMapping(path = "/admin/genre")
+	public ResponseEntity<Genre[]> readGenres(RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/genre", HttpMethod.GET, request, Genre[].class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Genre[]>((Genre[]) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@PutMapping(path = "/admin/genre")
+	public ResponseEntity<Genre> updateGenre(RequestEntity<Genre> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/genre", HttpMethod.PUT, request, Genre.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Genre>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@DeleteMapping(path = "/admin/genre/{id}")
+	public ResponseEntity<Genre> updateGenre(@PathVariable int id, RequestEntity<Genre> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/genre/{id}", HttpMethod.DELETE, request, Genre.class, id);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Genre>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
 		}
 	}
 	
@@ -171,5 +316,5 @@ public class OrchestratorController {
 			return new ResponseEntity<Publisher>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
 		}
 	}
-
+	
 }
