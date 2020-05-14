@@ -12,8 +12,4 @@ public class LmsApplication {
 		SpringApplication.run(LmsApplication.class, args);
 	}
 	
-	@Bean
-	public RestTemplate getRestTeplate() {
-		return new RestTemplate();
-	}
 }
