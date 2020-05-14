@@ -1,4 +1,4 @@
-package com.ss.training.lms.controller;
+package com.ss.training.lms.orchestrator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -31,7 +31,7 @@ import com.ss.training.lms.entity.Publisher;
 @RestController
 @CrossOrigin
 @RequestMapping("/lms")
-public class OrchestratorController {
+public class MainAdminOrchestrator {
 
 	private final String adminBase = "http://localhost:8083/lms/admin";
 
