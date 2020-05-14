@@ -32,15 +32,6 @@ public class LibrarianOrchestrator {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	@GetMapping(path = "/lms/librarian/branches")
-	public ResponseEntity<LibraryBranch[]> getBranches() {
-		try {
-			return restTemplate.getForEntity("http://localhost:8081/lms/librarian/branches", LibraryBranch[].class);
-		} catch (RestClientResponseException e) {
-			return new ResponseEntity<LibraryBranch[]>((LibraryBranch[]) null, HttpStatus.valueOf(e.getRawStatusCode()));
-		}
-	}
-	
 	@RequestMapping(path="lms/librarian/branches/{branch}/books/{book}/copies")
 	public ResponseEntity<BookCopies> getAnEntryOfBookCopies(@PathVariable int branch, @PathVariable int book)
 	{
