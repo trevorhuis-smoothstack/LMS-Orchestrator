@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ss.training.lms.entity.Author;
 import com.ss.training.lms.entity.LibraryBranch;
+import com.ss.training.lms.entity.Publisher;
 
 /**
  * @author Justin O'Brien
@@ -121,6 +122,53 @@ public class OrchestratorController {
 			return restTemplate.exchange(adminBase + "/branches/{id}", HttpMethod.DELETE, request, LibraryBranch.class, id);
 		} catch (RestClientResponseException e) {
 			return new ResponseEntity<LibraryBranch>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+	
+	// admin publisher
+	
+	@PostMapping(path = "/admin/publisher")
+	public ResponseEntity<Publisher> createPublisher(RequestEntity<Publisher> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/publisher", HttpMethod.POST, request, Publisher.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Publisher>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@GetMapping(path = "/admin/publishers/{id}")
+	public ResponseEntity<Publisher> readPublisher(@PathVariable int id, RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/publishers/{id}", HttpMethod.GET, request, Publisher.class, id);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Publisher>((Publisher) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@GetMapping(path = "/admin/publishers")
+	public ResponseEntity<Publisher[]> readPublishers(RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/publishers", HttpMethod.GET, request, Publisher[].class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Publisher[]>((Publisher[]) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@PutMapping(path = "/admin/publisher")
+	public ResponseEntity<Publisher> updatePublisher(RequestEntity<Publisher> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/publisher", HttpMethod.PUT, request, Publisher.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Publisher>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@DeleteMapping(path = "/admin/publishers/{id}")
+	public ResponseEntity<Publisher> updatePublisher(@PathVariable int id, RequestEntity<Publisher> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/publishers/{id}", HttpMethod.DELETE, request, Publisher.class, id);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<Publisher>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
 		}
 	}
 
