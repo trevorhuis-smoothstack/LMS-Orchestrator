@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import com.ss.training.lms.entity.Author;
+import com.ss.training.lms.entity.LibraryBranch;
 
 /**
  * @author Justin O'Brien
@@ -30,6 +30,8 @@ public class OrchestratorController {
 	@Autowired
 	RestTemplate restTemplate;
 
+	// admin author
+	
 	@PostMapping(path = "/admin/author")
 	public ResponseEntity<Author> createAuthor(RequestEntity<Author> request) {
 		try {
@@ -72,6 +74,53 @@ public class OrchestratorController {
 			return restTemplate.exchange(adminBase + "/authors/{id}", HttpMethod.DELETE, request, Author.class, id);
 		} catch (RestClientResponseException e) {
 			return new ResponseEntity<Author>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+	
+	// admin branch
+	
+	@PostMapping(path = "/admin/branch")
+	public ResponseEntity<LibraryBranch> createBranch(RequestEntity<LibraryBranch> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/branch", HttpMethod.POST, request, LibraryBranch.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<LibraryBranch>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@GetMapping(path = "/admin/branches/{id}")
+	public ResponseEntity<LibraryBranch> readBranch(@PathVariable int id, RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/branches/{id}", HttpMethod.GET, request, LibraryBranch.class, id);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<LibraryBranch>((LibraryBranch) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@GetMapping(path = "/admin/branches")
+	public ResponseEntity<LibraryBranch[]> readBranches(RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/branches", HttpMethod.GET, request, LibraryBranch[].class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<LibraryBranch[]>((LibraryBranch[]) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@PutMapping(path = "/admin/branch")
+	public ResponseEntity<LibraryBranch> updateBranch(RequestEntity<LibraryBranch> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/branch", HttpMethod.PUT, request, LibraryBranch.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<LibraryBranch>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
+
+	@DeleteMapping(path = "/admin/branches/{id}")
+	public ResponseEntity<LibraryBranch> updateBranch(@PathVariable int id, RequestEntity<LibraryBranch> request) {
+		try {
+			return restTemplate.exchange(adminBase + "/branches/{id}", HttpMethod.DELETE, request, LibraryBranch.class, id);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<LibraryBranch>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
 		}
 	}
 
