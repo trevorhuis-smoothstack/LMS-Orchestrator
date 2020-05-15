@@ -26,26 +26,17 @@ public class BorrowerOrchestrator {
 
     @Autowired
     RestTemplate restTemplate;
-    
-    @PutMapping(path="lms/borrower/returnBook")
-	public ResponseEntity<BookLoan> updateCopies( @RequestBody BookLoan bookLoan)
-	{
-		RequestEntity<BookLoan> request;
-		try {
-			request = RequestEntity
-				     .put(new URI("http://localhost:8082/lms/borrower/returnBook"))
-				     .accept(MediaType.APPLICATION_JSON)
-				     .body(bookLoan);
-					ResponseEntity<BookLoan> response = restTemplate.exchange(request, BookLoan.class);
-					return response;
 
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	
+	@PutMapping(path = "lms/borrower/returnBook")
+	public ResponseEntity<BookLoan> updateBook(RequestEntity<BookLoan> request) {
+		try {
+			return restTemplate.exchange("http://localhost:8082/lms/borrower/returnBook", HttpMethod.PUT, request, BookLoan.class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<BookLoan>(request.getBody(), HttpStatus.valueOf(e.getRawStatusCode()));
 		}
-		return null;
-    }
-    
+	}
+
     @PostMapping(path = "lms/borrower/checkOutBook/{bookId}/branch/{branchId}/borrower/{cardNo}")
 	public ResponseEntity<BookLoan> createBook(@PathVariable int bookId, @PathVariable int branchId, @PathVariable int cardNo) {
 		try {
@@ -55,4 +46,4 @@ public class BorrowerOrchestrator {
 			return new ResponseEntity<BookLoan>((BookLoan) null, HttpStatus.valueOf(e.getRawStatusCode()));
 		}
 	}
-}
+} 
