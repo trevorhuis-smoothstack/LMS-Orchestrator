@@ -37,11 +37,11 @@ public class BorrowerOrchestrator {
 		}
 	}
 
-    @PostMapping(path = "lms/borrower/checkOutBook/{bookId}/branch/{branchId}/borrower/{cardNo}")
-	public ResponseEntity<BookLoan> createBook(@PathVariable int bookId, @PathVariable int branchId, @PathVariable int cardNo) {
+	@PostMapping(path = "lms/borrower/checkOutBook/{bookId}/branch/{branchId}/borrower/{cardNo}")
+	public ResponseEntity<BookLoan> createBook(RequestEntity<BookLoan> request, @PathVariable int bookId, @PathVariable int branchId, @PathVariable int cardNo) {
 		try {
-			return restTemplate.postForEntity("http://localhost:8082/lms/borrower/checkOutBook/" + bookId + "/branch/"
-                    + branchId + "/borrower/" + cardNo, HttpMethod.POST, BookLoan.class);
+			return restTemplate.exchange("http://localhost:8082/lms/borrower/checkOutBook/" + bookId + "/branch/"
+                    + branchId + "/borrower/" + cardNo, HttpMethod.POST, request, BookLoan.class, bookId, branchId, cardNo);
 		} catch (RestClientResponseException e) {
 			return new ResponseEntity<BookLoan>((BookLoan) null, HttpStatus.valueOf(e.getRawStatusCode()));
 		}
