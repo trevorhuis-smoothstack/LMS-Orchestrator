@@ -44,13 +44,13 @@ public class LibrarianOrchestrator {
 	@GetMapping(path = "/lms/librarian/books/{search}")
 	public ResponseEntity<Book[]> getBooksWithSearch(@PathVariable String search) {
 		try {
-			return restTemplate.getForEntity("http://localhost:8081/lms/librarian/bookd/"+search, Book[].class);
+			return restTemplate.getForEntity("http://localhost:8081/lms/librarian/books/"+search, Book[].class);
 		} catch (RestClientResponseException e) {
 			return new ResponseEntity<Book[]>((Book[]) null, HttpStatus.valueOf(e.getRawStatusCode()));
 		}
 	}
 	
-	@RequestMapping(path="lms/librarian/branches/{branch}/books/{book}/copies")
+	@GetMapping(path="lms/librarian/branches/{branch}/books/{book}/copies")
 	public ResponseEntity<BookCopies> getAnEntryOfBookCopies(@PathVariable int branch, @PathVariable int book)
 	{
 	  return restTemplate.getForEntity("http://localhost:8081/lms/librarian/branches/"+branch+"/books/"+book+"/copies", BookCopies.class);
@@ -62,7 +62,7 @@ public class LibrarianOrchestrator {
 		RequestEntity<BookCopies> request;
 		try {
 			request = RequestEntity
-				     .put(new URI("lms/librarian/branches/"+branch+"/copies"))
+				     .put(new URI("http://localhost:8081/lms/librarian/branches/"+branch+"/copies"))
 				     .accept(MediaType.APPLICATION_JSON)
 				     .body(bookCopies);
 					ResponseEntity<BookCopies> response = restTemplate.exchange(request, BookCopies.class);
@@ -76,12 +76,12 @@ public class LibrarianOrchestrator {
 	}
 	  
 	@PutMapping(path="lms/librarian/branches/{branchId}")
-	public ResponseEntity<LibraryBranch> updateBranch(@RequestBody LibraryBranch branch)
+	public ResponseEntity<LibraryBranch> updateBranch(@PathVariable int branchId, @RequestBody LibraryBranch branch)
 	{
 		RequestEntity<LibraryBranch> request;
 		try {
 			request = RequestEntity
-				     .put(new URI("lms/librarian/branches/"+branch+"/copies"))
+				     .put(new URI("http://localhost:8081/lms/librarian/branches/"+branchId))
 				     .accept(MediaType.APPLICATION_JSON)
 				     .body(branch);
 					ResponseEntity<LibraryBranch> response = restTemplate.exchange(request, LibraryBranch.class);
