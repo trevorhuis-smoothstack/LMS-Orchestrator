@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -15,12 +16,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-import com.ss.training.lms.entity.Book;
 import com.ss.training.lms.entity.BookCopies;
 import com.ss.training.lms.entity.LibraryBranch;
 
@@ -32,12 +31,24 @@ public class LibrarianOrchestrator {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	@RequestMapping(path="lms/librarian/branches/{branch}/books/{book}/copies")
-	public ResponseEntity<BookCopies> getAnEntryOfBookCopies(@PathVariable int branch, @PathVariable int book)
-	{
-	  return restTemplate.getForEntity("http://localhost:8081/lms/librarian/branches/"+branch+"/books/"+book+"/copies", BookCopies.class);
+	@GetMapping(path = "/lms/librarian/branches")
+	public ResponseEntity<LibraryBranch[]> getBranches(RequestEntity<?> request) {
+		try {
+			return restTemplate.exchange("http://localhost:8081/lms/librarian/branches", HttpMethod.GET,request, LibraryBranch[].class);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<LibraryBranch[]>((LibraryBranch[]) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
 	}
 	
+	@GetMapping(path="lms/librarian/branches/{branch}/books/{book}/copies")
+	public ResponseEntity<BookCopies> getAnEntryOfBookCopies(@PathVariable int branch, @PathVariable int book, RequestEntity<?> request)
+	{
+		try {
+			return restTemplate.exchange("http://localhost:8081/lms/librarian/branches/{branch}/books/{book}/copies",HttpMethod.GET,request, BookCopies.class, branch,book);
+		} catch (RestClientResponseException e) {
+			return new ResponseEntity<BookCopies>((BookCopies) null, HttpStatus.valueOf(e.getRawStatusCode()));
+		}
+	}
 	
 	@PutMapping(path="lms/librarian/branches/{branch}/copies")
 	public ResponseEntity<BookCopies> updateCopies(@PathVariable int branch, @RequestBody BookCopies bookCopies)
@@ -45,7 +56,7 @@ public class LibrarianOrchestrator {
 		RequestEntity<BookCopies> request;
 		try {
 			request = RequestEntity
-				     .put(new URI("lms/librarian/branches/"+branch+"/copies"))
+				     .put(new URI("http://localhost:8081/lms/librarian/branches/"+branch+"/copies"))
 				     .accept(MediaType.APPLICATION_JSON)
 				     .body(bookCopies);
 					ResponseEntity<BookCopies> response = restTemplate.exchange(request, BookCopies.class);
@@ -59,12 +70,12 @@ public class LibrarianOrchestrator {
 	}
 	  
 	@PutMapping(path="lms/librarian/branches/{branchId}")
-	public ResponseEntity<LibraryBranch> updateBranch(@RequestBody LibraryBranch branch)
+	public ResponseEntity<LibraryBranch> updateBranch(@PathVariable int branchId, @RequestBody LibraryBranch branch)
 	{
 		RequestEntity<LibraryBranch> request;
 		try {
 			request = RequestEntity
-				     .put(new URI("lms/librarian/branches/"+branch+"/copies"))
+				     .put(new URI("http://localhost:8081/lms/librarian/branches/"+branchId))
 				     .accept(MediaType.APPLICATION_JSON)
 				     .body(branch);
 					ResponseEntity<LibraryBranch> response = restTemplate.exchange(request, LibraryBranch.class);
